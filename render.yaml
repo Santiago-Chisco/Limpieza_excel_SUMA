@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: limpiador-excel
+    runtime: python
+    plan: starter            # plan de pago: siempre encendido y permite disco
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true
+    healthCheckPath: /_stcore/health
+    disk:
+      name: datos
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.3
+      - key: DAMAGED_DIR
+        value: /var/data/excel_danados
+      - key: APP_USER
+        value: admin
+      - key: APP_PASSWORD
+        sync: false          # la escribes tú en el panel de Render
